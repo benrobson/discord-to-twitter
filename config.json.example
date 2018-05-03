@@ -1,3 +1,4 @@
 {
-  "prefix": "-"
+  "prefix": "-",
+  "errortimeout": "5000"
 }
