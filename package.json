@@ -1,0 +1,24 @@
+{
+  "name": "discordtotwitter",
+  "version": "1.0.0",
+  "description": "Tweet from Discord to twitter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shadowolfyt/discordtotwitter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shadowolfyt/discordtotwitter/issues"
+  },
+  "homepage": "https://github.com/shadowolfyt/discordtotwitter#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "fs": "0.0.1-security",
+    "twit": "^2.2.9"
+  }
+}
