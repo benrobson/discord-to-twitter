@@ -4,8 +4,7 @@ const token = require('./token.json');
 const fs = require('fs');
 const client = new Discord.Client({disableEveryone: true});
 const twit = require('twit');
-
-let tweetchannel = '441407314038226945';
+const errors = require('./util/errors.js');
 
 // Bot Bootup Event
 client.on('ready', async () => {
@@ -14,7 +13,7 @@ client.on('ready', async () => {
 
     console.log(`${client.user.username} is online and is operating on ${client.guilds.size} ${pluralnonpluralservers} for ${client.users.size} ${pluralnonpluralusers}.`);
     client.user.setActivity(`${client.guilds.size} ${pluralnonpluralservers} // ${client.users.size} ${pluralnonpluralusers}`, {type: 'PLAYING'});
-    return;
+    return
 });
 
 // Twitter Stuff
@@ -35,19 +34,22 @@ client.on('message', async message => {
   let messageArray = message.content.split(' ');
   let args = messageArray.slice(1);
 
-  if (message.author.bot) return;
+  if (message.content.startsWith(config.prefix + 'tweet')) {
+    let tweetchannel = message.guild.channels.find('name', 'tweet');
+    if (!tweetchannel) return errors.noTweetChannel(message);
 
-  if (message.channel.id === tweetchannel) {
-    let inputmessage = args.join(' ');
-
-    twitter.post('statuses/update', { status: `${inputmessage}` }, function(err, data, response) {
-      console.log('Tweet Successfully Tweeted!');
-      console.log(`${message.author.username} has just Tweeted "${inputmessage}"`);
-  })} else {
-    let inputmessage = args.join(' ');
-    if (!inputmessage) return message.reply('you cannot just tweet nothing...');
-    console.log(`${message.author.username} attempted to Tweet "${inputmessage}", but failed because they were not in the right channel.`);
-  }
+    if (message.channel === tweetchannel) {
+      let inputmessage = args.join(' ');
+      if (!inputmessage) return errors.emptyMessage(message);
+      if (message.channel === tweetchannel)
+        twitter.post('statuses/update', { status: `${inputmessage}` }, function(err, data, response) {
+            console.log('Tweet Successfully Tweeted!');
+            console.log(`${message.author.username} has just Tweeted "${inputmessage}"`);
+        })} else {
+          let inputmessage = args.join(' ');
+          console.log(`${message.author.username} attempted to Tweet "${inputmessage}", but failed because they were not in the right channel.`);
+        }
+      };
 });
 
 client.login(token.token);
